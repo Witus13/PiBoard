@@ -1,0 +1,78 @@
+<link rel="import" href="bower_components/polymer/polymer.html">
+
+<dom-module id="pi-clocker">
+  <template>
+    <style>
+      
+      :host {
+        display: flex;
+        justify-content: center;
+        user-select: none;
+      }
+      
+      :host(:not(.faded)) span {
+        text-shadow: 0px 16px 16px rgba(0,0,0,0.2);
+      }
+      
+      span {
+        color: white;
+        font-family: 'Roboto';
+        font-size: 144px;
+        margin: 0;
+      }
+      
+    </style>
+    
+    <div class="holder">
+      <span id="hours"></span>
+      <span class="divider">:</span>
+      <span id="minutes"></span>
+    </div>
+  </template>
+  
+  <script>
+    Polymer({
+      
+      is: 'pi-clocker',
+      
+      ready: function() {
+        // Init the variables
+        let minutes = new Date().getMinutes();
+        let hours = new Date().getHours();
+        
+        // Set the time to now
+        this.$.hours.textContent = hours.toString().length === 1 ? '0' + hours : hours;
+        this.$.minutes.textContent = minutes.toString().length === 1 ? '0' + minutes : minutes;
+        
+        // Change when this minute ends
+        setTimeout(() => {
+          minutes++;
+          if (minutes === 60) {
+            minutes = 0;
+            hours++;
+            if (hours === 24) {
+              hours = 0;
+            }
+          }
+          this.$.hours.textContent = hours.toString().length === 1 ? '0' + hours : hours;
+          this.$.minutes.textContent = minutes.toString().length === 1 ? '0' + minutes : minutes;
+          
+          // Change every minute
+          setInterval(() => {
+            minutes++;
+            if (minutes === 60) {
+              minutes = 0;
+              hours++;
+              if (hours === 24) {
+                hours = 0;
+              }
+            }
+            this.$.hours.textContent = hours.toString().length === 1 ? '0' + hours : hours;
+            this.$.minutes.textContent = minutes.toString().length === 1 ? '0' + minutes : minutes;
+          }, 60000);
+        }, (61 - new Date().getSeconds()) * 1000);
+      }
+      
+    });
+  </script>
+</dom-module>

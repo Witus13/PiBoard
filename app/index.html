@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>PiBoard</title>
+  
+  <!-- Polymer settings -->
+  <script>
+    window.Polymer = {
+      dom: 'shadow',
+      lazyRegister: true,
+      useNativeCSSProperties: true
+    };
+  </script>
+  
+  <!-- Elements imports -->
+  <link rel="import" href="bower_components/paper-calendar/paper-calendar.html">
+  <link rel="import" href="bower_components/paper-styles/typography.html">
+  <link rel="import" href="pi-clocker.html">
+  
+  <!-- Icon font -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
+  
+  <style>
+    
+    body:not(.development) {
+      cursor: none;
+    }
+    
+    body {
+      font-family: "Roboto";
+      height: 720px;
+      width: 1280px;
+      margin: 0;
+      user-select: none;
+    }
+    
+    #holder.faded {
+      background: #000;
+    }
+    
+    #holder {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: url(/material-wall.jpg);
+      transition: all 250ms;
+    }
+    
+    #holder > * {
+      margin: 70px;
+      width: 50%;
+    }
+    
+    #calendar {
+      height: 320px;
+      margin-left: 35px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 20px;
+      border: 20px solid rgba(0,0,0,0);
+      border-width: 20px 10px;
+      transition: all 250ms;
+    }
+    
+    #time {
+      margin-right: 35px;
+      transition: all 250ms;
+    }
+    
+    #calendar.faded {
+      background: none;
+      --paper-calendar-text-color: #FFF;
+      --paper-calendar-header-text-color: rgba(255, 255, 255, 0.75);
+      --paper-calendar-selected-color: #000;
+      --paper-calendar-selected-background: #FFF;
+    }
+    
+    /*#buttons.faded > i {
+      display: none;
+    }*/
+    
+    #buttons {
+      z-index: 1;
+      color: white;
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+    }
+    
+    #buttons i {
+      margin: 15px;
+    }
+    
+  </style>
+</head>
+
+<body class="development">
+  <div id="buttons">
+    <i class="material-icons" onclick="toggleFullscreen()">fullscreen</i>
+    <i class="material-icons" onclick="toggleLights()">lightbulb_outline</i>
+  </div>
+  <div id="holder">
+    <pi-clocker id="time"></pi-clocker>
+    <paper-calendar id="calendar" swipe-direction="vertical"></paper-calendar>
+  </div>
+  
+  
+  <script>
+    const holder = document.querySelector('#holder');
+    const calendar = document.querySelector('#calendar');
+    const clock = document.querySelector('#time');
+    const buttons = document.querySelector('#buttons');
+    
+    function resetCalendar() {
+      calendar.selectedMonth = new Date().getTime();
+    }
+    
+    function lightsOff() {
+      calendar.classList.add('faded');
+      clock.classList.add('faded');
+      buttons.classList.add('faded');
+      holder.classList.add('faded');
+    }
+    
+    function lightsOn() {
+      calendar.classList.remove('faded');
+      clock.classList.remove('faded');
+      buttons.classList.remove('faded');
+      holder.classList.remove('faded');
+    }
+    
+    function toggleFullscreen() {
+      document.webkitFullscreenElement ? document.webkitExitFullscreen() :
+                                         document.body.webkitRequestFullscreen();
+    }
+    
+    function toggleLights() {
+      holder.classList.contains('faded') ? lightsOn() : lightsOff();
+    }
+  </script>
+</body>
+</html>
