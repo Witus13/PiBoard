@@ -9,7 +9,7 @@ const port = process.argv[3] || 8080,
 // Create HTTP server
 http.createServer((request, response) => {
   const uri = url.parse(request.url).pathname,
-        filename = path.join(process.cwd(), 'app', uri);
+        filename = path.join(__dirname, 'app', uri);
   
   console.log('🔄 Requested: ' + filename);
   
