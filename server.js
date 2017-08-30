@@ -11,7 +11,7 @@ http.createServer((request, response) => {
   const uri = url.parse(request.url).pathname,
         filename = path.join(__dirname, 'app', uri);
   
-  console.log('🔄 Requested: ' + filename);
+  console.log('↻ Requested: ' + filename);
   
   if (!fs.existsSync(filename)) {
     throw404(response);
@@ -27,7 +27,7 @@ http.createServer((request, response) => {
       response.writeHead(200);
       response.write(file, "binary");
       response.end();
-      console.log('✔ Answered with file: ' + filename);
+      console.log('✓ Answered with file: ' + filename);
     } else if (info.isDirectory()) {
       if (!fs.existsSync(filename + '/index.html')) {
         throw404(response);
@@ -37,7 +37,7 @@ http.createServer((request, response) => {
       response.writeHead(200);
       response.write(file, "binary");
       response.end();
-      console.log('✔ Directory, answered with file: ' + filename + '/index.html');
+      console.log('✓ Directory, answered with file: ' + filename + '/index.html');
     }
   } catch(err) {
     response.writeHead(500, {"Content-Type": "text/plain"});
